@@ -20,11 +20,13 @@ app.get('/api/tasks/list/', (request, response) => {
 app.get('/api/tasks/id/:id/', (request, response) => {
 	const id = Number(request.params.id);
 	const task = tasks.getById(id);
-	const message = task ? null : 'Task not found';
 	const payload = new Payload();
 
-	payload.add('task', task);
-	payload.add('message', message);
+	if (!task) {
+		payload.add('error', 'Task not found');
+	} else {
+		payload.add('task', task);
+	}
 
 	response.send(payload.get());
 });
