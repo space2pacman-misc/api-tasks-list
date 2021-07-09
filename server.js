@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Payload = require('./core/Payload');
 const Tasks = require('./core/Tasks');
+const RequiredFields = require('./core/RequiredFields');
 const app = express();
 const tasks = new Tasks();
 
@@ -32,9 +33,16 @@ app.post('/api/tasks/add/', (request, response) => {
 	const name = request.body.name;
 	const description = request.body.description;
 	const payload = new Payload();
-	
-	tasks.add({ name, description });
-	payload.add('message', 'task has been added');
+	const requiredFields = new RequiredFields(RequiredFields.tasksAdd, { name, description });
+	const checkingResult = requiredFields.check();
+
+	if (checkingResult.state) {
+		tasks.add({ name, description });
+		payload.add('message', 'task has been added');
+	} else {
+		payload.add('error', checkingResult.message);
+	}
+
 	response.send(payload.get());
 });
 
