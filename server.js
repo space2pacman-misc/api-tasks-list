@@ -1,38 +1,41 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const Payload = require('./core/Payload');
-const tasks = require('./db/tasks');
+const Tasks = require('./core/Tasks');
+const app = express();
+const tasks = new Tasks();
 
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 
-app.get('/tasks', (request, response) => {
-	response.send(tasks);
+app.get('/api/tasks/list/', (request, response) => {
+	const payload = new Payload();
+
+	payload.add('tasks', tasks.getAll());
+
+	response.send(payload.get());
 });
 
-app.get('/tasks/:id', (request, response) => {
+app.get('/api/tasks/id/:id/', (request, response) => {
 	const id = Number(request.params.id);
-	const task = tasks.find(task => task.id === id) || null;
-	const message = task ? null : 'Task not found'
+	const task = tasks.getById(id);
+	const message = task ? null : 'Task not found';
 	const payload = new Payload();
 
 	payload.add('task', task);
 	payload.add('message', message);
 
 	response.send(payload.get());
-})
+});
 
-app.post('/tasks/add', (request, response) => {
-	const payload = new Payload();
+app.post('/api/tasks/add/', (request, response) => {
 	const name = request.body.name;
 	const description = request.body.description;
+	const payload = new Payload();
 	
-	tasks.push({ id: 1, name, description });
-
+	tasks.add({ name, description });
 	payload.add('message', 'task has been added');
-
 	response.send(payload.get());
-})
+});
 
 app.listen(7777);
