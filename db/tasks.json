@@ -6,6 +6,7 @@
 		"time": {
 			"completion": 1700000000000,
 			"creation": 1625770641290		
-		}
+		},
+		"complited": false
 	}
 ]

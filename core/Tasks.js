@@ -15,7 +15,18 @@ class Tasks {
 	}
 
 	add(params) {
-		this._tasks.push({ id: id.getId(), name: params.name, description: params.description });
+		const task = {
+			id: id.getId(),
+			name: params.name,
+			description: params.description,
+			complited: false,
+			time: {
+				completion: params.data || null,
+				creation: Date.now()		
+			},
+		};
+		
+		this._tasks.push(task);
 	}
 }
 
