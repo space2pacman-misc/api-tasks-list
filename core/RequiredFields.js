@@ -41,8 +41,15 @@ class RequiredFields {
 		return payload;
 	}
 
-	static get tasksAdd() {
-		return require('./../required_fields/tasksAdd');
+	static get tasks() {
+		return {
+			get add() {
+				return require('./../required_fields/tasks/add');
+			},
+			get edit() {
+				return require('./../required_fields/tasks/edit');
+			}
+		}
 	}
 }
 

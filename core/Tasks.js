@@ -28,6 +28,14 @@ class Tasks {
 		
 		this._tasks.push(task);
 	}
+
+	edit(id, params) {
+		const task = this.getById(id);
+
+		task.name = params.name || task.name;
+		task.description = params.description || task.description;
+		task.complited = params.complited || task.complited;
+	}
 }
 
 module.exports = Tasks;
