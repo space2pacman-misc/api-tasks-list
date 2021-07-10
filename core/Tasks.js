@@ -1,3 +1,4 @@
+const fs = require('fs');
 const tasks = require('./../db/tasks');
 const id = require('./Id');
 
@@ -34,7 +35,14 @@ class Tasks {
 
 		task.name = params.name || task.name;
 		task.description = params.description || task.description;
-		task.complited = params.complited || task.complited;
+		task.complited = params.complited === undefined ? task.complited : params.complited;
+
+		fs.writeFile(__dirname + './../db/tasks.json', JSON.stringify(this.getAll()), () => {
+			fs.readFile(__dirname + './../db/tasks.json', 'utf-8', (error, tasks) => {
+				this._tasks = JSON.parse(tasks);
+			});
+		});
+		
 	}
 }
 

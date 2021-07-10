@@ -56,9 +56,9 @@ app.post('/api/tasks/edit/', (request, response) => {
 
 	if (checkingRequiredResult.state) {
 		const task = tasks.getById(id);
-		const name = request.body.name || task.name;
-		const description = request.body.description || task.description;
-		const complited = request.body.complited || task.complited;
+		const name = request.body.name;
+		const description = request.body.description;
+		const complited = request.body.complited;
 
 		tasks.edit(id, { name, description, complited });
 		payload.add('message', 'task has been edited');
