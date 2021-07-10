@@ -22,10 +22,10 @@ app.get('/api/tasks/id/:id/', (request, response) => {
 	const task = tasks.getById(id);
 	const payload = new Payload();
 
-	if (!task) {
-		payload.add('error', 'Task not found');
-	} else {
+	if (task) {
 		payload.add('task', task);
+	} else {
+		payload.add('error', 'Task not found');
 	}
 
 	response.send(payload.get());
