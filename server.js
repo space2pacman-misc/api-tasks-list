@@ -36,13 +36,13 @@ app.post('/api/tasks/add/', (request, response) => {
 	const description = request.body.description;
 	const payload = new Payload();
 	const requiredFields = new RequiredFields(RequiredFields.tasks.add, { name, description });
-	const checkingResult = requiredFields.check();
+	const checkingRequiredResult = requiredFields.check();
 
-	if (checkingResult.state) {
+	if (checkingRequiredResult.state) {
 		tasks.add({ name, description });
 		payload.add('message', 'task has been added');
 	} else {
-		payload.add('error', checkingResult.message);
+		payload.add('error', checkingRequiredResult.message);
 	}
 
 	response.send(payload.get());
@@ -51,10 +51,10 @@ app.post('/api/tasks/add/', (request, response) => {
 app.post('/api/tasks/edit/', (request, response) => {
 	const id = request.body.id;
 	const requiredFields = new RequiredFields(RequiredFields.tasks.edit, { id });
-	const checkingResult = requiredFields.check();
+	const checkingRequiredResult = requiredFields.check();
 	const payload = new Payload();
 
-	if (checkingResult.state) {
+	if (checkingRequiredResult.state) {
 		const task = tasks.getById(id);
 		const name = request.body.name || task.name;
 		const description = request.body.description || task.description;
@@ -63,7 +63,7 @@ app.post('/api/tasks/edit/', (request, response) => {
 		tasks.edit(id, { name, description, complited });
 		payload.add('message', 'task has been edited');
 	} else {
-		payload.add('error', checkingResult.message);
+		payload.add('error', checkingRequiredResult.message);
 	}
 
 	response.send(payload.get());
