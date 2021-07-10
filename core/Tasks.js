@@ -42,7 +42,6 @@ class Tasks {
 				this._tasks = JSON.parse(tasks);
 			});
 		});
-		
 	}
 }
 
