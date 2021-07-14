@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.get('/api/tasks/list/', (request, response) => {
 	const payload = new Payload();
 
-	payload.add('tasks', tasks.getAll());
+	payload.add('tasks', tasks.sort(tasks.filterBy(request.query), request.query));
 
 	response.send(payload.get());
 });

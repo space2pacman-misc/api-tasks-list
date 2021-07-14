@@ -43,6 +43,40 @@ class Tasks {
 			});
 		});
 	}
+
+	filterBy(fields) {
+		let tasks = this._tasks.filter(task => {
+			let isReturned = true;
+
+			for (const key in fields) {
+				if (key === 'name' && !task.name.includes(fields[key])) {
+					isReturned = false;
+				}
+
+				if (key === 'complited' && task.complited.toString() !== fields[key]) {
+					isReturned = false;
+				}
+			}
+
+			return isReturned;
+		});
+
+		return tasks;
+	}
+
+	sort(tasks, fields) {
+		if (fields && fields.hasOwnProperty('sortBy') && fields.hasOwnProperty('sortType')) {
+			return tasks.sort((taskFirst, taskSecond) => {
+				if (taskFirst[fields.sortBy] < taskSecond[fields.sortBy]) {
+					return Number(fields.sortType) === 1 ? 1 : -1;
+				} else {
+					return Number(fields.sortType) === -1 ? -1 : 1;
+				}
+			});
+		} else {
+			return tasks;
+		}
+	}
 }
 
 module.exports = Tasks;
