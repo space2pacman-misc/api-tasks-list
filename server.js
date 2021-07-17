@@ -11,8 +11,16 @@ app.use(bodyParser.json());
 
 app.get('/api/tasks/list/', (request, response) => {
 	const payload = new Payload();
+	const query = request.query;
+	const tasksList = {
+		filtered: null,
+		sorted: null
+	}
 
-	payload.add('tasks', tasks.sort(tasks.filterBy(request.query), request.query));
+	tasksList.filtered = tasks.filterBy(query);
+	tasksList.sorted =  tasks.sort(tasksList.filtered, query);
+
+	payload.add('tasks', tasksList.sorted);
 
 	response.send(payload.get());
 });
